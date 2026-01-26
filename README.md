@@ -5,39 +5,34 @@ SwiftKart is a production-oriented e-commerce backend built using Spring Boot mi
 
 This project demonstrates real-world backend architecture, service decoupling, and scalable system design, focusing purely on backend engineering best practices.
 
-🏗️ System Architecture
-                    ┌────────────────────────┐
-                    │   Client / Frontend    │
-                    │ (Postman / UI Client)  │
-                    └───────────┬────────────┘
-                                │ HTTP (REST APIs)
-                                ▼
-                 ┌────────────────────────────┐
-                 │        API Gateway          │
-                 │   (Conceptual / Nginx)     │
-                 └───────────┬────────────────┘
-                             │
-        ┌────────────────────┼────────────────────┐
-        ▼                    ▼                    ▼
-┌──────────────┐     ┌──────────────┐     ┌──────────────┐
-│ User Service │     │ Order Service│     │Inventory Svc │
-│ (SpringBoot) │     │ (SpringBoot) │     │ (SpringBoot) │
-│ JWT Auth     │     │ Order Mgmt   │     │ Stock Mgmt   │
-└──────┬───────┘     └──────┬───────┘     └──────┬───────┘
-       │                    │                    │
-       │                    │ Kafka Event        │
-       │                    │ (OrderCreated)     │
-       │                    ▼                    │
-       │            ┌──────────────────────┐    │
-       │            │        Kafka          │◄───┘
-       │            │ (Local / Dockerized) │
-       │            └──────────────────────┘
-       │
-       ▼
-┌──────────────────────────────────────────────────┐
-│                PostgreSQL Database                │
-│  (Local / EC2-hosted depending on environment)    │
-└──────────────────────────────────────────────────┘
+
+## 🏗️ System Architecture
+
+```mermaid
+flowchart TD
+    Client[Client / Frontend<br/>(Postman / UI)]
+    Gateway[API Gateway<br/>(Conceptual / Nginx)]
+
+    UserSvc[User Service<br/>(Spring Boot<br/>JWT Auth)]
+    OrderSvc[Order Service<br/>(Spring Boot<br/>Order Mgmt)]
+    InventorySvc[Inventory Service<br/>(Spring Boot<br/>Stock Mgmt)]
+
+    Kafka[Kafka Broker<br/>(Local / Dockerized)]
+    DB[(PostgreSQL Database<br/>(Local / EC2-hosted))]
+
+    Client -->|HTTP REST APIs| Gateway
+    Gateway --> UserSvc
+    Gateway --> OrderSvc
+    Gateway --> InventorySvc
+
+    OrderSvc -->|OrderCreated Event| Kafka
+    Kafka --> InventorySvc
+
+    UserSvc --> DB
+    OrderSvc --> DB
+    InventorySvc --> DB
+```
+
 
 🧠 Architecture Highlights
 
