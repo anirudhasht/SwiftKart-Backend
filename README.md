@@ -6,41 +6,7 @@ The project demonstrates real-world backend design, service decoupling, and scal
 
 This project focuses on backend engineering best practices rather than UI, making it suitable for learning and showcasing distributed systems concepts.
 
-🏗️ System Architecture
-                    ┌────────────────────┐
-                    │   Client / Frontend │
-                    │ (Postman / UI)      │
-                    └─────────┬──────────┘
-                              │ HTTP (REST)
-                              ▼
-                   ┌──────────────────────┐
-                   │   API Gateway        │
-                   │ (Conceptual / Nginx) │
-                   └─────────┬────────────┘
-                             │
-        ┌────────────────────┼────────────────────┐
-        ▼                    ▼                    ▼
-┌──────────────┐     ┌──────────────┐     ┌──────────────┐
-│ User Service │     │ Order Service│     │Inventory Svc │
-│ (Spring Boot)│     │ (Spring Boot)│     │ (Spring Boot)│
-│ JWT Auth     │     │ Order Mgmt   │     │ Stock Mgmt   │
-└──────┬───────┘     └──────┬───────┘     └──────┬───────┘
-       │                    │                    │
-       │                    │ Kafka Event        │
-       │                    │ (OrderCreated)     │
-       │                    ▼                    │
-       │            ┌────────────────────┐       │
-       │            │      Kafka         │◄──────┘
-       │            │ (Local / Docker)   │
-       │            └────────────────────┘
-       │
-       ▼
-┌─────────────────────────────────────────────────┐
-│               PostgreSQL Database                │
-│ (Local / EC2-hosted depending on environment)    │
-└─────────────────────────────────────────────────┘
 
-🧠 Architecture Highlights
 
 Microservices-based design with clear separation of responsibilities
 
