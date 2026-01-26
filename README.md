@@ -2,11 +2,44 @@
 Event-Driven Microservices E-Commerce System
 
 SwiftKart is a production-oriented e-commerce backend built using Spring Boot microservices, Kafka-based asynchronous communication, and cloud deployment on AWS EC2.
-The project demonstrates real-world backend design, service decoupling, and scalable system architecture.
 
-This project focuses on backend engineering best practices rather than UI, making it suitable for learning and showcasing distributed systems concepts.
+This project demonstrates real-world backend architecture, service decoupling, and scalable system design, focusing purely on backend engineering best practices.
 
+🏗️ System Architecture
+                    ┌────────────────────────┐
+                    │   Client / Frontend    │
+                    │ (Postman / UI Client)  │
+                    └───────────┬────────────┘
+                                │ HTTP (REST APIs)
+                                ▼
+                 ┌────────────────────────────┐
+                 │        API Gateway          │
+                 │   (Conceptual / Nginx)     │
+                 └───────────┬────────────────┘
+                             │
+        ┌────────────────────┼────────────────────┐
+        ▼                    ▼                    ▼
+┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│ User Service │     │ Order Service│     │Inventory Svc │
+│ (SpringBoot) │     │ (SpringBoot) │     │ (SpringBoot) │
+│ JWT Auth     │     │ Order Mgmt   │     │ Stock Mgmt   │
+└──────┬───────┘     └──────┬───────┘     └──────┬───────┘
+       │                    │                    │
+       │                    │ Kafka Event        │
+       │                    │ (OrderCreated)     │
+       │                    ▼                    │
+       │            ┌──────────────────────┐    │
+       │            │        Kafka          │◄───┘
+       │            │ (Local / Dockerized) │
+       │            └──────────────────────┘
+       │
+       ▼
+┌──────────────────────────────────────────────────┐
+│                PostgreSQL Database                │
+│  (Local / EC2-hosted depending on environment)    │
+└──────────────────────────────────────────────────┘
 
+🧠 Architecture Highlights
 
 Microservices-based design with clear separation of responsibilities
 
@@ -16,9 +49,9 @@ JWT-based authentication & authorization
 
 Stateless services enabling horizontal scalability
 
-Containerized deployment using Docker
+Dockerized deployment for consistency across environments
 
-Cloud deployment on AWS EC2 (free-tier compatible)
+Cloud-aware design compatible with AWS free tier
 
 🧩 Services Overview
 🔐 User Service
@@ -27,7 +60,7 @@ User registration & login
 
 JWT token generation and validation
 
-Centralized authentication logic
+Centralized authentication and authorization logic
 
 📦 Order Service
 
@@ -35,7 +68,7 @@ Order creation and management
 
 Publishes OrderCreated events to Kafka
 
-Does not directly depend on Inventory Service (loose coupling)
+Does not directly call Inventory Service (loose coupling)
 
 🏪 Inventory Service
 
@@ -43,7 +76,7 @@ Consumes Kafka events asynchronously
 
 Updates product stock based on order events
 
-Designed to handle service failures independently
+Designed to handle failures independently
 
 ⚙️ Tech Stack
 Backend
@@ -81,44 +114,44 @@ SwiftKart-Backend/
  └── README.md
 
 🚀 Deployment Strategy
-Local / Containerized Environment
+🧪 Local / Containerized Environment
 
-All services run via Docker Compose
+All services run using Docker Compose
 
-Kafka + Zookeeper run locally in containers
+Kafka and Zookeeper run locally in containers
 
-PostgreSQL runs as a containerized service
+PostgreSQL runs as a containerized database
 
-Cloud Deployment (AWS EC2)
+☁️ Cloud Deployment (AWS EC2)
 
 Spring Boot services deployed on AWS EC2
 
 Kafka used locally due to free-tier constraints
 
-In a production setup, Kafka can be replaced with:
+In production, Kafka can be replaced with:
 
 AWS MSK
 
 Confluent Cloud
 
-Cloud-native messaging services
+Other managed messaging services
 
-⚠️ This approach reflects real-world industry practices where managed services are preferred in production.
+This mirrors real-world practices where managed services are preferred in production environments.
 
 📌 API Documentation (Postman)
+🔗 Postman Collection
 
-🔗 Postman Collection:
 👉 https://documenter.getpostman.com/view/43458909/2sB3dSR9N6
 
 Includes:
 
-Auth APIs
+Authentication APIs
 
 Order APIs
 
 Inventory APIs
 
-End-to-end flow testing
+End-to-end request flow testing
 
 🧪 Key Engineering Concepts Demonstrated
 
@@ -144,9 +177,9 @@ Centralized logging & monitoring
 
 Kubernetes-based deployment
 
-Retry & dead-letter queues in Kafka
+Retry and dead-letter queues in Kafka
 
-Caching with Redis
+Redis-based caching
 
 👨‍💻 Author
 
