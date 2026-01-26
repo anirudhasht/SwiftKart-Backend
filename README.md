@@ -10,15 +10,15 @@ This project demonstrates real-world backend architecture, service decoupling, a
 
 ```mermaid
 flowchart TD
-    Client[Client / Frontend<br/>(Postman / UI)]
-    Gateway[API Gateway<br/>(Conceptual / Nginx)]
+    Client["Client / Frontend (Postman / UI)"]
+    Gateway["API Gateway (Conceptual - Nginx)"]
 
-    UserSvc[User Service<br/>(Spring Boot<br/>JWT Auth)]
-    OrderSvc[Order Service<br/>(Spring Boot<br/>Order Mgmt)]
-    InventorySvc[Inventory Service<br/>(Spring Boot<br/>Stock Mgmt)]
+    UserSvc["User Service - Spring Boot (JWT Auth)"]
+    OrderSvc["Order Service - Spring Boot (Order Management)"]
+    InventorySvc["Inventory Service - Spring Boot (Stock Management)"]
 
-    Kafka[Kafka Broker<br/>(Local / Dockerized)]
-    DB[(PostgreSQL Database<br/>(Local / EC2-hosted))]
+    Kafka["Kafka Broker (Local / Dockerized)"]
+    DB["PostgreSQL Database (Local / EC2-hosted)"]
 
     Client -->|HTTP REST APIs| Gateway
     Gateway --> UserSvc
@@ -32,6 +32,7 @@ flowchart TD
     OrderSvc --> DB
     InventorySvc --> DB
 ```
+
 
 
 🧠 Architecture Highlights
